@@ -35,6 +35,8 @@
 {% block analytics_dataset_name %}{{ pkg.name  }}{% endblock %}
 {% block analytics_dataset_id %}{{ pkg.id }}{% endblock %}
 {% block analytics_dataset_availability %}{{ analytics_dataset_availability }}{% endblock %}
+{% block analytics_came_from %}{{ analytics_came_from }}{% endblock %}
+{% block analytics_supports_notifications %}{{ analytics_supports_notifications }}{% endblock %}
 {% set page_has_mobile_version = True %}
 {% set edit_mode = h.check_access('package_update', {'id':pkg.id })  %}
 
