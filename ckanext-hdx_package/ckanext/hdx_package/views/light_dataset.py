@@ -4,6 +4,7 @@ import ckan.model as model
 import ckan.plugins.toolkit as tk
 
 from ckan.common import g
+from ckan.types import DataDict, Request
 import ckan.logic as logic
 
 import ckanext.hdx_package.helpers.analytics as analytics
@@ -66,7 +67,7 @@ def read(id):
     org_info_dict = _get_org_extras(org_id)
     user_survey_url = org_info_dict.get('user_survey_url')
     if dataset_dict.get('type') == 'dataset':
-        analytics_dict = _compute_analytics(dataset_dict)
+        analytics_dict = _compute_analytics(dataset_dict, tk.request)
         dataset_dict['page_list'] = cp_h.hdx_get_page_list_for_dataset(context, dataset_dict)
         dataset_dict['link_list'] = get_action('hdx_package_links_by_id_list')(context, {'id': dataset_dict.get('name')})
 
@@ -122,13 +123,17 @@ def generic_search(html_template):
     return render(html_template, data_dict)
 
 
-def _compute_analytics(dataset_dict):
-    result = {}
-    result['is_cod'] = analytics.is_cod(dataset_dict)
-    result['is_indicator'] = analytics.is_indicator(dataset_dict)
-    result['is_archived'] = analytics.is_archived(dataset_dict)
-    result['analytics_group_names'], result['analytics_group_ids'] = analytics.extract_locations_in_json(dataset_dict)
-    result['analytics_dataset_availability'] = analytics.dataset_availability(dataset_dict)
+def _compute_analytics(dataset_dict: DataDict, request: Request):
+    result = {
+        'is_cod': analytics.is_cod(dataset_dict),
+        'is_indicator': analytics.is_indicator(dataset_dict),
+        'is_archived': analytics.is_archived(dataset_dict),
+        'analytics_group_names': (analytics.extract_locations_in_json(dataset_dict))[0],
+        'analytics_group_ids': (analytics.extract_locations_in_json(dataset_dict))[1],
+        'analytics_dataset_availability': analytics.dataset_availability(dataset_dict),
+        'analytics_came_from': analytics.came_from(request.args),
+        'analytics_supports_notifications': analytics.supports_notifications(dataset_dict),
+    }
     return result
 
 

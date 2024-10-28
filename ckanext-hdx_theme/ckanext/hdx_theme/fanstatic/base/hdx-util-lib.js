@@ -190,6 +190,7 @@
         var randomIndex = Math.floor(Math.random() * NOTIFICATION_OPTIN_OPTIONS.length);
         optinLocation = NOTIFICATION_OPTIN_OPTIONS[randomIndex];
         localStorage.setItem(NOTIFICATION_OPTIN_KEY, optinLocation);
+        hdxUtil.analytics.sendABTestingEvent('notification platform', optinLocation.replace('_', ' '));
       }
 
       return optinLocation;

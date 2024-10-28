@@ -13,6 +13,9 @@ from ckan.views.api import CONTENT_TYPES
 
 from ckanext.hdx_theme.util.mail import hdx_validate_email
 from ckanext.hdx_users.controller_logic import notification_platform_logic
+from ckanext.hdx_users.helpers.analytics import EmailValidationAnalyticsSender
+
+from hashlib import md5
 
 _h = tk.h
 abort = tk.abort
@@ -37,12 +40,14 @@ def subscribe_to_dataset() -> Response:
             token_obj = notification_platform_logic.verify_email_validation_token(token)
         except Exception as e:
             _h.flash_error('Your token is invalid or has expired. Please try to subscribe again.')
+            EmailValidationAnalyticsSender('notification platform', False, '').send_to_queue()
             return tk.redirect_to(dataset_list_url)
 
         email = token_obj.user_id
         dataset_id = token_obj.object_id
         if not email or not dataset_id:
             _h.flash_error('Couldn\'t find required parameters: email and dataset_id.')
+            EmailValidationAnalyticsSender('notification platform', False, '').send_to_queue()
             return tk.redirect_to(dataset_list_url)
 
         context = {'ignore_auth': True}
@@ -65,6 +70,9 @@ def subscribe_to_dataset() -> Response:
         except Exception as e:
             log.error('An exception occurred:' + str(e))
             _h.flash_error('An error occurred: ' + str(e))
+
+        email_hash = md5(email.strip().lower().encode('utf8')).hexdigest()
+        EmailValidationAnalyticsSender('notification platform', True, email_hash).send_to_queue()
 
         # Redirect to the dataset page
         dataset_url = tk.url_for('dataset.read', id=dataset_id)

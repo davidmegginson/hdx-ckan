@@ -288,7 +288,9 @@ $(
                 "is cod": analyticsInfo.isCod,
                 "is indicator": analyticsInfo.isIndicator,
                 "is archived": analyticsInfo.isArchived,
-                "authenticated": analyticsInfo.authenticated
+                "authenticated": analyticsInfo.authenticated,
+                "came from": analyticsInfo.cameFrom, // notification platform email
+                "supports notifications": analyticsInfo.supportsNotifications, // true / false
             });
         });
 
@@ -715,6 +717,53 @@ $(
 
     }
     hdxUtil.analytics.sendSurveyEvent = sendSurveyEvent;
+
+
+    /**
+     * Sends events related to notification platform popup interaction
+     * @param interactionType {string}
+     * @param popupTitle {string}
+     * @param popupSource {string}
+     * @param datasetId {string}
+     * @param datasetName {string}
+     * @param emailHash {string}
+     */
+    function sendNotificationPlatformPopupInteractionEvent(interactionType, popupTitle, popupSource, datasetId, datasetName, emailHash) {
+        var mixpanelData = {
+            "eventName": "popup interaction",
+            "eventMeta": {
+                "interaction type": interactionType, // show popup / confirm popup
+                "popup type": "notification platform",
+                "popup title": popupTitle, // subscribe to notifications / unsubscribe from notifications
+                "popup source": popupSource, // download / action menu / floating button (for subscribe)
+                "dataset id": datasetId,
+                "dataset name": datasetName,
+                "email hash": emailHash,
+            }
+        };
+        return sendAnalyticsEventsAsync(mixpanelData);
+    }
+
+    hdxUtil.analytics.sendNotificationPlatformPopupInteractionEvent = sendNotificationPlatformPopupInteractionEvent;
+
+
+    /**
+     * Sends events related to A/B testing
+     * @param testingType {string}
+     * @param testingOption {string}
+     */
+    function sendABTestingEvent(testingType, testingOption) {
+        var mixpanelData = {
+            "eventName": "ab testing",
+            "eventMeta": {
+                "type": testingType, // notification platform
+                "option": testingOption, // action menu / floating button
+            }
+        };
+        return sendAnalyticsEventsAsync(mixpanelData);
+    }
+
+    hdxUtil.analytics.sendABTestingEvent = sendABTestingEvent;
 
     /**
      * This function will send the analytics events to the server async and will return a promise

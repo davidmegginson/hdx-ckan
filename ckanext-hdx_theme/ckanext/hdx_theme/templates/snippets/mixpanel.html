@@ -53,7 +53,9 @@
       "is indicator": analyticsInfo.isIndicator,
       "is archived": analyticsInfo.isArchived,
       "dataset id": analyticsInfo.datasetId,
-      "dataset name": analyticsInfo.datasetName
+      "dataset name": analyticsInfo.datasetName,
+      "came from": analyticsInfo.cameFrom,
+      "supports notifications": analyticsInfo.supportsNotifications,
     };
 
     mixpanel.track("page view", mixpanelTrackData);

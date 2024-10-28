@@ -4257,6 +4257,9 @@ label.terms-of-service:after {
     width: 40px;
   }
 }
+.flash-messages {
+  background-color: unset;
+}
 .mobile-carousel {
   display: none;
 }

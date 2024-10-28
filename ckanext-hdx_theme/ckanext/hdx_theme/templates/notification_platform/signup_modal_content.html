@@ -5,6 +5,8 @@
 
 <form method="post" id="notification-platform-form" novalidate data-module="hdx-form-validator">
   <input type="hidden" name="dataset_id" value="{{ pkg.id }}">
+  <input type="hidden" name="dataset_name" value="{{ pkg.name }}">
+  <input type="hidden" name="popup_source" value="">
 
   {{ h.snippet('bem.blocks/input_field.html',
     type="email",

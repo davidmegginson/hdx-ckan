@@ -333,3 +333,6 @@
     width: 40px;
   }
 }
+.flash-messages {
+  background-color: unset;
+}
