@@ -144,7 +144,7 @@ $(document).ready(function () {
 
   $unsubscribeSubmitButton.on('click', onUnsubscribeSubmit);
 
-  $actionMenuButton.find('a').on('click', function(e) {
+  $actionMenuButton.on('click', function(e) {
     e.preventDefault();
     var datasetId = $(this).data('dataset-id');
     var datasetName = $(this).data('dataset-name');
