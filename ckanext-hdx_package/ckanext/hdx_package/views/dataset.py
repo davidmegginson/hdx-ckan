@@ -137,6 +137,8 @@ def read(id):
     analytics_is_archived = analytics.is_archived(pkg_dict)
     analytics_group_names, analytics_group_ids = analytics.extract_locations_in_json(pkg_dict)
     analytics_dataset_availability = analytics.dataset_availability(pkg_dict)
+    analytics_came_from = analytics.came_from(request.args)
+    analytics_supports_notifications = analytics.supports_notifications(pkg_dict)
 
     # changes done for indicator
     act_data_dict = {'id': pkg_dict['id'], 'limit': 7}
@@ -189,7 +191,7 @@ def read(id):
     unsubscribe_token = request.args.get('unsubscribe_token', None)
     if unsubscribe_token:
         try:
-            token_obj = verify_unsubscribe_token(unsubscribe_token, inactivate=False)
+            unsubscribe_token = verify_unsubscribe_token(unsubscribe_token, inactivate=False)
         except Exception as e:
             unsubscribe_token = None
             h.flash_error('Your token is invalid or has expired.')
@@ -208,6 +210,8 @@ def read(id):
         'analytics_group_names': analytics_group_names,
         'analytics_group_ids': analytics_group_ids,
         'analytics_dataset_availability': analytics_dataset_availability,
+        'analytics_came_from': analytics_came_from,
+        'analytics_supports_notifications': analytics_supports_notifications,
         'stats_downloads_last_weeks': stats_downloads_last_weeks,
         'user_survey_url': user_survey_url,
         'logo_config': logo_config,

@@ -23,6 +23,7 @@ from ckan.plugins import toolkit
 from ckanext.hdx_package.helpers.freshness_calculator import UPDATE_FREQ_INFO
 from ckanext.hdx_package.helpers.p_code_filters_helper import are_new_p_code_filters_enabled
 from ckanext.hdx_theme.util.light_redirect import switch_url_path
+from ckanext.hdx_users.helpers.notification_platform import check_notifications_enabled_for_dataset
 
 _ = toolkit._
 request = toolkit.request
@@ -1029,3 +1030,8 @@ def hdx_generate_basemap_config_string() -> str:
         'token': config.get('hdx.mapbox.baselayer.token'),
     }
     return json.dumps(conf_dict)
+
+
+def hdx_dataset_supports_notifications(pkg_id: str) -> str:
+    supports_notifications = check_notifications_enabled_for_dataset(pkg_id)
+    return str(supports_notifications).lower()

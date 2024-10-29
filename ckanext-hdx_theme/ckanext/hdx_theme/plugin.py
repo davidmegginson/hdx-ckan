@@ -264,6 +264,7 @@ class HDXThemePlugin(plugins.SingletonPlugin):
             'hdx_generate_basemap_config_string': hdx_helpers.hdx_generate_basemap_config_string,
             'hdx_location_dict': hdx_helpers.hdx_location_dict,
             'hdx_user_orgs_dict': hdx_helpers.hdx_user_orgs_dict,
+            'hdx_dataset_supports_notifications': hdx_helpers.hdx_dataset_supports_notifications,
             'HDX_CONST': const,
         }
 

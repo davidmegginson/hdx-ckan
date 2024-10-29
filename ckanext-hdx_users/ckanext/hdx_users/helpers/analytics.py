@@ -31,3 +31,18 @@ class FirstLoginAnalyticsSender(AbstractAnalyticsSender):
             }
         }
 
+
+class EmailValidationAnalyticsSender(AbstractAnalyticsSender):
+
+    def __init__(self, validation_type: str, validation_status: bool, email_hash: str):
+        super(EmailValidationAnalyticsSender, self).__init__()
+        event_name = 'email validation'
+        self.analytics_dict = {
+            'event_name': event_name,
+            'mixpanel_meta': {
+                'type': validation_type,
+                'successful': validation_status,
+                'email hash': email_hash,
+            },
+            'ga_meta': {}
+        }
