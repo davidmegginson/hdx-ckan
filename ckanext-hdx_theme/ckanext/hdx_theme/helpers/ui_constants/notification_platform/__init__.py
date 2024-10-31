@@ -1,7 +1,7 @@
 CONSTANTS = {
     'OPT_IN_TEXT': '''Sign up to receive email notifications when this dataset is updated''',
 
-    'SIGNUP_MODAL_TITLE': '''Do you want to receive email notifications when this dataset is updated?''',
+    'SIGNUP_MODAL_TITLE': '''Sign up for email notifications on this dataset''',
     'SIGNUP_MODAL_INTRO_TEXT': '''Would you like to receive email notifications when resources (files) in this
     dataset are added, changed or deleted on HDX? If so, please enter your email address below:''',
     'SIGNUP_MODAL_UPDATE_FREQUENCY_TEXT': '''This dataset updates approximately: {0}''',
