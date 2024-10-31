@@ -39,7 +39,7 @@ def subscribe_to_dataset() -> Response:
         try:
             token_obj = notification_platform_logic.verify_email_validation_token(token)
         except Exception as e:
-            _h.flash_error('Your token is invalid or has expired. Please try to subscribe again.')
+            _h.flash_error('Your token is invalid. Your email address might have already been validated.')
             EmailValidationAnalyticsSender('notification platform', False, '').send_to_queue()
             return tk.redirect_to(dataset_list_url)
 
@@ -91,6 +91,7 @@ def subscription_confirmation() -> Response:
         hdx_validate_email(email)
 
         token_obj = notification_platform_logic.get_or_generate_email_validation_token(email, dataset_id)
+        dataset_dict = tk.get_action('package_show')({}, {'id': dataset_id})
 
         subject = u'Please verify your email address'
         verify_email_link = _h.url_for(
@@ -98,7 +99,9 @@ def subscription_confirmation() -> Response:
             token=token_obj.token, qualified=True
         )
         email_data = {
-            'verify_email_link': verify_email_link
+            'verify_email_link': verify_email_link,
+            'dataset_title': dataset_dict.get('title'),
+            'dataset_id': dataset_id
         }
         hdx_mailer.mail_recipient([{'email': email}], subject, email_data, footer=None,
                                   snippet='email/content/notification_platform/verify_email.html')
