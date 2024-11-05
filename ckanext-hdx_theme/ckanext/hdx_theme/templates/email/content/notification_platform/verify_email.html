@@ -1,5 +1,6 @@
 <p>Dear HDX User,</p>
 
+<p>You're subscribing to the <a href="{{ h.url_for('hdx_dataset.read', id=data.dataset_id, _external=True) }}" target="_blank"> {{ data.dataset_title }}</a> dataset.</p>
 <p>Please verify your email by clicking the button below:</p>
 
 <a href="{{ data.verify_email_link }}" target="_blank" title="Verify email" class="button">Verify email</a>
